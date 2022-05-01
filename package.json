@@ -1,0 +1,36 @@
+{
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "mariadb": "^3.0.0",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.19.0"
+  },
+  "name": "auction-api",
+  "version": "1.0.0",
+  "description": "an auction api with node_js express sequelize and mariadb",
+  "main": "root.js",
+  "devDependencies": {
+    "dotenv": "^16.0.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.16"
+  },
+  "scripts": {
+    "dev": "nodemon root.js",
+    "start": "node root.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "node-auction-api"
+  },
+  "keywords": [
+    "auction",
+    "api"
+  ],
+  "author": "YoStM - Yohan Saint-Martin",
+  "license": "ISC"
+}
