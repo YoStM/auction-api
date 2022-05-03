@@ -14,6 +14,13 @@ Server.use(MORGAN("dev")).use(BODY_PARSER.json());
 
 // Routes for all models
 Routes(Server);
+// http request errors management
+Server.use(({ res }) => {
+  res.status(404).json({
+    message:
+      "Impossible de trouver la ressource demandée. Veuillez réessayez avec une autre URL.",
+  });
+});
 
 Server.listen(PORT, () => {
   console.log(`Le serveur écoute sur le port ${PORT}`);

@@ -21,7 +21,6 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const CategoryModel = require("../models/category");
-const Categories = require("./Category_preset");
 const Category = CategoryModel(seq, DataTypes);
 const UserModel = require("../models/user");
 const User = UserModel(seq, DataTypes);
@@ -29,6 +28,27 @@ const BidModel = require("../models/bid");
 const Bid = BidModel(seq, DataTypes);
 const AuctionModel = require("../models/auction");
 const Auction = AuctionModel(seq, DataTypes);
+
+//////////////////////////
+// Models relationships //
+
+User.hasMany(Auction, {
+  as: "seller",
+  foreignKey: {
+    name: "seller_id",
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+});
+User.hasMany(Auction, {
+  as: "buyer",
+  foreignKey: {
+    name: "buyer_id",
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
+});
+Auction.belongsTo(User);
 
 User.hasMany(Bid, {
   foreignKey: {
@@ -41,38 +61,20 @@ Bid.belongsTo(User);
 
 Auction.hasMany(Bid);
 Bid.belongsTo(Auction);
-
-User.hasMany(Auction, {
-  foreignKey: {
-    name: "buyer_id",
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-});
-Auction.belongsTo(User, {
-  foreignKey: {
-    name: "seller_id",
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-});
-
 Category.hasMany(Auction);
 Auction.belongsTo(Category);
+//////////////////////////
 
 const Init = () => {
-  return seq.sync({ force: true }).then((_) => {
-    Categories.map((category) => {
-      Category.create({
-        id: category.id,
-        libelle: category.libelle,
-      }).then((category) => console.log(category.toJSON()));
-    });
+  return seq.sync({ alter: true }).then((_) => {
     console.log("La base de donnée a bien été initialisée !");
   });
 };
 
 module.exports = {
-  Init,
+  User,
   Category,
+  Auction,
+  Bid,
+  Init,
 };

@@ -29,13 +29,17 @@ module.exports = (sequelize, DataTypes) => {
       },
       sell_price: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       status: {
         type: DataTypes.STRING,
         allowNull: false,
       },
     },
-    {}
+    {
+      timestamps: true,
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    }
   );
 };

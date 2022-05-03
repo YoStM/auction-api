@@ -19,6 +19,9 @@
     "nodemon": "^2.0.16"
   },
   "scripts": {
+    "loadCategories": "node ./src/fixtures/categories.js",
+    "loadUsers": "node ./src/fixtures/users.js",
+    "loadAuctions": "node ./src/fixtures/auctions.js",
     "dev": "nodemon root.js",
     "start": "node root.js",
     "test": "echo \"Error: no test specified\" && exit 1"
