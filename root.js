@@ -12,7 +12,7 @@ DB.Init();
 
 Server.use(MORGAN("dev")).use(BODY_PARSER.json());
 
-// Routes for all models
+// All API endpoints
 Routes(Server);
 
 Server.listen(PORT, () => {

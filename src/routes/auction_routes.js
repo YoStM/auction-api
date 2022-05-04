@@ -1,3 +1,4 @@
+const res = require("express/lib/response");
 const { Auction } = require("../db/sequelize");
 
 const getAllAuctions = (server) => {
@@ -37,10 +38,23 @@ const getAuctionByPk = (server) => {
 
 const createAuction = (server) => {
   server.post("/auction", (req, res) => {
-    res.send("hello from auction creation");
+    const data = req.body;
+    return Auction.create(data)
+      .then((auction) => {
+        res.status(201).json({
+          message: `L'enchère [${auction.title}] a bien été enregistrée.`,
+          data: auction,
+        });
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message:
+            "Impossible d'enregistrer l'enchère. Veuillez réessayer dans quelques instants.",
+          error: error.message,
+        });
+      });
   });
 };
-
 const updateAuction = (server) => {
   server.post("/update-auction/:id", (req, res) => {
     res.send("hello from auction creation");
