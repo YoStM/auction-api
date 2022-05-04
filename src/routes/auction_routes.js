@@ -1,4 +1,4 @@
-const res = require("express/lib/response");
+const { ValidationError } = require("sequelize");
 const { Auction } = require("../db/sequelize");
 
 const getAllAuctions = (server) => {
@@ -21,7 +21,7 @@ const getAuctionByPk = (server) => {
     const Id = parseInt(req.params.id);
     return Auction.findByPk(Id)
       .then((auction) => {
-        res.status(201).json({
+        res.status(200).json({
           message: `L'enchère ${auction.id} a été récupérée avec succès.`,
           data: auction,
         });
@@ -55,15 +55,58 @@ const createAuction = (server) => {
       });
   });
 };
+
 const updateAuction = (server) => {
-  server.post("/update-auction/:id", (req, res) => {
-    res.send("hello from auction creation");
+  server.put("/auction/:id", (req, res) => {
+    const ID = req.params.id;
+    Auction.update(req.body, { where: { id: ID } }).then((_) => {
+      return Auction.findByPk(ID)
+        .then((auction) => {
+          if (auction === null) {
+            return res
+              .status(404)
+              .json({ message: "L'enchère demandée n'éxiste pas." });
+          }
+          res.status(200).json({
+            message: `L'enchère [${auction.title}] a bien été modifiée.`,
+          });
+        })
+        .catch((error) => {
+          if (error instanceof ValidationError) {
+            res.status(400).json({ message: error.message, data: error });
+          }
+          res
+            .status(500)
+            .json({ message: "L'enchère n'a pas pu être modifiée." });
+        });
+    });
   });
 };
 
 const destroyAuction = (server) => {
-  server.post("/destroy-auction/:id", (req, res) => {
-    res.send("hello from auction creation");
+  server.delete("/auction/:id", (req, res) => {
+    Auction.findByPk(req.params.id).then((auction) => {
+      if (auction === null) {
+        return res
+          .status(404)
+          .json({ message: "L'enchère demandée n'existe pas." });
+      }
+      const AuctionDeleted = auction;
+      Auction.destroy({ where: { id: auction.id } })
+        .then(() => {
+          res.status(200).json({
+            message: `L'enchère [${AuctionDeleted.title}] a bien été supprimée.`,
+            data: AuctionDeleted,
+          });
+        })
+        .catch((error) => {
+          res.status(500).json({
+            message:
+              "L'enchère n'a pas pu être supprimée. Réessayez ultérieurement.",
+            data: error,
+          });
+        });
+    });
   });
 };
 

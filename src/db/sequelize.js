@@ -66,7 +66,7 @@ Auction.belongsTo(Category);
 //////////////////////////
 
 const Init = () => {
-  return seq.sync({ alter: true }).then((_) => {
+  return seq.sync().then((_) => {
     console.log("La base de donnée a bien été initialisée !");
   });
 };
