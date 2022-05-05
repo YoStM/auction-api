@@ -8,7 +8,7 @@ module.exports = (Server) => {
   UserRoutes.getUserByPk(Server);
   UserRoutes.updateUser(Server);
   UserRoutes.destroyUser(Server);
-  UserRoutes.getAllUsers(Server);
+  // UserRoutes.getAllUsers(Server);
 
   // Auction model routes
   AuctionRoutes.createAuction(Server);

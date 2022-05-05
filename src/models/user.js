@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('User', {
+  return sequelize.define("User", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -11,9 +11,9 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       validate: {
         notEmpty: {
-          msg: 'Le mot de passe ne peut pas être vide.',
+          msg: "Le mot de passe ne peut pas être vide.",
         },
-        notNull: { msg: 'Le mot de passe est obligatoire.' },
+        notNull: { msg: "Le mot de passe est obligatoire." },
       },
     },
     password: {
@@ -21,10 +21,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: 'Le mot de passe ne peut pas être vide.',
+          msg: "Le mot de passe ne peut pas être vide.",
         },
-        notNull: { msg: 'Le mot de passe est obligatoire.' },
-        len: [8, 30],
+        notNull: { msg: "Le mot de passe est obligatoire." },
+        len: {
+          args: [[8, 100]],
+          msg: "Le mot de passe doit contenir entre 8 et 90 caractères.",
+        },
       },
     },
     email: {
@@ -32,11 +35,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        isEmail: { msg: 'Une adresse email valide doit être renseignée.' },
+        isEmail: { msg: "Une adresse email valide doit être renseignée." },
         notEmpty: {
-          msg: 'Le champs email ne peut pas être vide.',
+          msg: "Le champs email ne peut pas être vide.",
         },
-        notNull: { msg: 'Le champs email est obligatoire.' },
+        notNull: { msg: "Le champs email est obligatoire." },
       },
     },
     firstname: {
@@ -52,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 150,
       validate: {
-        isInt: { msg: 'Le crédit est un entier.' },
+        isInt: { msg: "Le crédit est un entier." },
       },
     },
     isAdmin: {
@@ -60,5 +63,5 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: false,
     },
-  })
-}
+  });
+};

@@ -49,14 +49,30 @@ const updateBid = (server) => {
   server.put("/bid/:id", (req, res) => {
     const ID = parseInt(req.params.id);
     Bid.update(req.body, { where: { id: ID } }).then(() => {
-      return Bid.findByPk(ID).then((bid) => {
-        if (bid === null) {
-          res.status(404).json({ message: "L'offre demandée n'existe pas." });
-        }
-        res
-          .status(200)
-          .json({ message: `L'offre [${bid.id}] a bien été modifiée.` });
-      });
+      return Bid.findByPk(ID)
+        .then((bid) => {
+          if (bid === null) {
+            return res
+              .status(404)
+              .json({ message: "L'offre demandée n'existe pas." });
+          }
+          res
+            .status(200)
+            .json({ message: `L'offre [${bid.id}] a bien été modifiée.` });
+        })
+        .catch((error) => {
+          if (error instanceof ValidationError) {
+            return res
+              .status(400)
+              .json({ message: error.message, data: error });
+          }
+          res
+            .status(500)
+            .json({
+              message: "L'offre n'a pas pu être modifiée.",
+              data: error,
+            });
+        });
     });
   });
 };
@@ -77,7 +93,7 @@ const destroyBid = (server) => {
           });
         })
         .catch((error) => {
-          res.status(500).json({
+          return res.status(500).json({
             message:
               "L'enchère n'a pas pu être supprimée. Réessayez ultérieurement.",
             data: error,
