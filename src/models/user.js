@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define("User", {
+  return sequelize.define('User', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -9,17 +9,34 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        notEmpty: {
+          msg: 'Le mot de passe ne peut pas être vide.',
+        },
+        notNull: { msg: 'Le mot de passe est obligatoire.' },
+      },
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: 'Le mot de passe ne peut pas être vide.',
+        },
+        notNull: { msg: 'Le mot de passe est obligatoire.' },
+        len: [8, 30],
+      },
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
       validate: {
-        isEmail: { msg: "Une adresse email valide doit être renseignée." },
+        isEmail: { msg: 'Une adresse email valide doit être renseignée.' },
+        notEmpty: {
+          msg: 'Le champs email ne peut pas être vide.',
+        },
+        notNull: { msg: 'Le champs email est obligatoire.' },
       },
     },
     firstname: {
@@ -34,11 +51,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 150,
+      validate: {
+        isInt: { msg: 'Le crédit est un entier.' },
+      },
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
     },
-  });
-};
+  })
+}
