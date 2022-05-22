@@ -116,28 +116,6 @@ const destroyAuction = (server) => {
         .status(500)
         .json({ message: "L'enchère n'a pas pu être supprimée.", data: error });
     }
-    // Auction.findByPk(req.params.id).then((auction) => {
-    //   if (auction === null) {
-    //     return res
-    //       .status(404)
-    //       .json({ message: "L'enchère demandée n'existe pas." });
-    //   }
-    //   const AuctionDeleted = auction;
-    //   Auction.destroy({ where: { id: auction.id } })
-    //     .then(() => {
-    //       res.status(200).json({
-    //         message: `L'enchère [${AuctionDeleted.title}] a bien été supprimée.`,
-    //         data: AuctionDeleted,
-    //       });
-    //     })
-    //     .catch((error) => {
-    //       return res.status(500).json({
-    //         message:
-    //           "L'enchère n'a pas pu être supprimée. Réessayez ultérieurement.",
-    //         data: error,
-    //       });
-    //     });
-    // });
   });
 };
 
